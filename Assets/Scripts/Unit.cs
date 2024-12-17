@@ -10,6 +10,7 @@ public class Unit : MonoBehaviour
     private Vector3 targetPosition;
     private float stoppingDistance = 0.1f;
 
+    [SerializeField] private GridPosition gridPosition;
 
     private void Awake()
     {
@@ -17,10 +18,20 @@ public class Unit : MonoBehaviour
     }
     private void Start()
     {
+        // LevelGrid.Instance.SetUnitAtGridPosition(this);
+        gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+        LevelGrid.Instance.AddUnitAtGridPosition(gridPosition, this);
     }
     private void Update()
     {
         Moving();
+        GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+
+        if (newGridPosition != gridPosition)
+        {
+            LevelGrid.Instance.UnitMovedGridPosition(this, gridPosition, newGridPosition);
+            gridPosition = newGridPosition;
+        }
         //
         // if (Input.GetMouseButtonDown(0))
         // {

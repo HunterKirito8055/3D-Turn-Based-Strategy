@@ -145,8 +145,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 4
-  rotateSpeed: 10
+  rotateSpeed: 20
   animator: {fileID: 6776602579130967953}
+  gridPosition:
+    x: 0
+    z: 0
 --- !u!65 &8247393314878613073
 BoxCollider:
   m_ObjectHideFlags: 0

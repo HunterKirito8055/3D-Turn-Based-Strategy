@@ -12,6 +12,7 @@ public class GridObject
     {
         this.gridSystem = gridSystem;
         this.gridPosition = gridPosition;
+        units = new List<Unit>();
     }
 
     public override string ToString()
@@ -19,7 +20,7 @@ public class GridObject
         string gridObjectString = "";
         foreach (Unit unit in units)
         {
-            gridObjectString += unit +",\n ";
+            gridObjectString += unit + ",\n ";
         }
         return gridPosition.ToString() + ",\n " + gridObjectString;
     }

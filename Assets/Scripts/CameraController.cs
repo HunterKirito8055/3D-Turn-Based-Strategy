@@ -1,70 +1,98 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
     public float moveSpeed;
     public float rotationSpeed;
+    public float zoomAmount = 1;
+    public float zoomSpeed = 10;
 
+    [SerializeField] private CinemachineVirtualCamera cinemachineVirtualCamera;
+    private CinemachineTransposer cinemachineTransposer;
+
+    private const float MIN_FOLLOW_Y_OFFSET = 2f;
+    private const float MAX_FOLLOW_Y_OFFSET = 12f;
     private Vector3 inputDir;
     private Vector3 rotation;
+    private Vector3 targetFollowOffset;
+
     void Start()
     {
-
+        cinemachineTransposer = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>();
+        targetFollowOffset = cinemachineTransposer.m_FollowOffset;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        for (int i = 0; i < 10; i++)
+        HandleMovement();
+
+        HandleRotation();
+
+        HandleZoom();
+    }
+
+    private void HandleZoom()
+    {
+        var scrollDelta = Input.mouseScrollDelta;
+        if (scrollDelta.y > 0)
         {
-            new BotStateMachine().Update();
+            targetFollowOffset.y -= zoomAmount;
+        }
+        else if (scrollDelta.y < 0)
+        {
+            targetFollowOffset.y += zoomAmount;
         }
 
+        targetFollowOffset.y = Mathf.Clamp(targetFollowOffset.y, MIN_FOLLOW_Y_OFFSET, MAX_FOLLOW_Y_OFFSET);
+        cinemachineTransposer.m_FollowOffset = Vector3.Lerp(cinemachineTransposer.m_FollowOffset, targetFollowOffset,
+            Time.deltaTime * zoomSpeed); //lerp ()
+    }
 
-        inputDir = Vector3.zero;
-        if (Input.GetKey(KeyCode.W))
-        {
-            inputDir += Vector3.forward;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            inputDir += Vector3.back;
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            inputDir += Vector3.left;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            inputDir += Vector3.right;
-        }
-        inputDir.Normalize();
-        Vector3 move = transform.forward * inputDir.z + transform.right * inputDir.x;
-        transform.position += move * (moveSpeed * Time.deltaTime);
-
+    private void HandleRotation()
+    {
         rotation = Vector3.zero;
 
         if (Input.GetKey(KeyCode.Q))
         {
             rotation = Vector3.up;
         }
+
         if (Input.GetKey(KeyCode.E))
         {
             rotation = Vector3.down;
         }
-        transform.eulerAngles += (rotation * (rotationSpeed * Time.deltaTime));
 
+        transform.eulerAngles += (rotation * (rotationSpeed * Time.deltaTime));
     }
 
-    class BotStateMachine
+    private void HandleMovement()
     {
-        public void Update()
+        inputDir = Vector3.zero;
+        if (Input.GetKey(KeyCode.W))
         {
-            //this bot to many bots distances
-            //Raycast
-//
+            inputDir += Vector3.forward;
         }
+
+        if (Input.GetKey(KeyCode.S))
+        {
+            inputDir += Vector3.back;
+        }
+
+        if (Input.GetKey(KeyCode.A))
+        {
+            inputDir += Vector3.left;
+        }
+
+        if (Input.GetKey(KeyCode.D))
+        {
+            inputDir += Vector3.right;
+        }
+
+        inputDir.Normalize();
+        Vector3 move = transform.forward * inputDir.z + transform.right * inputDir.x;
+        transform.position += move * (moveSpeed * Time.deltaTime);
     }
 }

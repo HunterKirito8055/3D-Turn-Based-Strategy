@@ -17,6 +17,12 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        for (int i = 0; i < 10; i++)
+        {
+            new BotStateMachine().Update();
+        }
+
+
         inputDir = Vector3.zero;
         if (Input.GetKey(KeyCode.W))
         {
@@ -50,5 +56,15 @@ public class CameraController : MonoBehaviour
         }
         transform.eulerAngles += (rotation * (rotationSpeed * Time.deltaTime));
 
+    }
+
+    class BotStateMachine
+    {
+        public void Update()
+        {
+            //this bot to many bots distances
+            //Raycast
+//
+        }
     }
 }

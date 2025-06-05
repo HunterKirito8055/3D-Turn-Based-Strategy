@@ -107,6 +107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1622321384276312584}
   - component: {fileID: 1209657030714295497}
+  - component: {fileID: 920282713507348394}
   - component: {fileID: 8247393314878613073}
   m_Layer: 7
   m_Name: Unit
@@ -144,12 +145,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 183aab2bfd4b742e2add36f7fec829a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 4
-  rotateSpeed: 20
-  animator: {fileID: 6776602579130967953}
   gridPosition:
     x: 0
     z: 0
+--- !u!114 &920282713507348394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4889161325242677118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3abd4762092161c47a62a78a938e2115, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 6776602579130967953}
+  moveSpeed: 5
+  rotateSpeed: 10
+  maxMoveDistance: 5
 --- !u!65 &8247393314878613073
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -19,6 +19,7 @@ public class UnitActionSystem : MonoBehaviour
             Destroy(Instance);
             return;
         }
+
         Instance = this;
     }
 
@@ -28,14 +29,18 @@ public class UnitActionSystem : MonoBehaviour
         {
             if (TryHandleUnitSelection())
             {
-
             }
             else
             {
-                selectedUnit?.MoveTo(MouseWorld.GetPosition());
+                GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
+                if (selectedUnit.GetMoveAction().IsValidActionGridPosition(mouseGridPosition))
+                {
+                    selectedUnit?.GetMoveAction().MoveTo(mouseGridPosition);
+                }
             }
         }
     }
+
     private bool TryHandleUnitSelection()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -47,13 +52,16 @@ public class UnitActionSystem : MonoBehaviour
                 return true;
             }
         }
+
         return false;
     }
+
     private void SetSelectedUnit(Unit unit)
     {
         selectedUnit = unit;
         OnSelectedUnit?.Invoke(this, EventArgs.Empty);
     }
+
     public Unit GetSelectedUnit()
     {
         return selectedUnit;
